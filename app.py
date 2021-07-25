@@ -11,44 +11,44 @@ APP_FONT = 'Helvetica'
 # Main Loop
 root = Tk()
 root.title('TodoList')
+root.resizable(False, False)
 root.geometry(f'{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{WINDOW_X}+{WINDOW_Y}')
 
 # Main Parts
-header = Frame(root, height=100, width=WINDOW_WIDTH)
-body = Frame(root, bg="yellow", height=100, width=WINDOW_WIDTH)
-navbar = Frame(root, height=100, width=WINDOW_WIDTH)
+header = Frame(root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH//2)
+header.grid(row=0, column=0, columnspan=2)
+body = Frame(root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH//2)
+body.grid(row=0, column=2, columnspan=2)
 
 # Header
+app_label = Label(header, text='TodoList', font=(APP_FONT, '12'), width=10)
+app_label.pack()
+
 date_text = StringVar()
-app_label = Label(header, text="TodoList", font=(APP_FONT, '24', 'bold'))
-date_label = Label(header, textvariable=date_text, font=(APP_FONT, '16'))
+date_label = Label(header, textvariable=date_text,
+                   font=(APP_FONT, '12'), width=10)
 date_text.set(get_current_date())
+date_label.pack()
+
+add_navbtn = Button(header, text="Add", width=13)
+add_navbtn.pack()
+
+cal_navbtn = Button(header, text="Calendar", width=13)
+cal_navbtn.pack()
+
+tags_navbtn = Button(header, text="Tags", width=13)
+tags_navbtn.pack()
+
+del_navbtn = Button(header, text="Deleted", width=13)
+del_navbtn.pack()
 
 # Body
-task = Frame(body)
-checkbox = Checkbutton(task, text='Test Task')
+tasks_listbox = Listbox(body, height=24, width=29)
+tasks_listbox.pack(side=LEFT)
 
-# Navbar
-add_navbtn = Button(navbar, text="Add", width=9)
-cal_navbtn = Button(navbar, text="Calendar", width=9)
-tags_navbtn = Button(navbar, text="Tags", width=9)
-del_navbtn = Button(navbar, text="Deleted", width=9)
-
-
-# Render
-header.grid(row=0, column=0, columnspan=4, rowspan=2)
-body.grid(row=2, column=0, columnspan=4, rowspan=4)
-navbar.grid(row=6, column=0, columnspan=4, rowspan=2)
-
-app_label.grid(row=0, column=0)
-date_label.grid(row=1, column=0)
-
-task.grid(row=0, column=0)
-checkbox.grid(row=0, column=0)
-
-add_navbtn.grid(row=0, column=0, columnspan=1)
-cal_navbtn.grid(row=0, column=1, columnspan=1)
-tags_navbtn.grid(row=0, column=2, columnspan=1)
-del_navbtn.grid(row=0, column=3, columnspan=1)
+tasks_scrollbar = Scrollbar(body)
+tasks_scrollbar.pack(side=RIGHT, fill=Y)
+tasks_listbox.config(yscrollcommand=tasks_scrollbar.set)
+tasks_scrollbar.config(command=tasks_listbox.yview)
 
 root.mainloop()
