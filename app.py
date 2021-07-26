@@ -1,5 +1,5 @@
 from tkinter import *
-from commands import get_current_date
+from commands import get_current_date, set_body
 
 # Constants
 WINDOW_HEIGHT = 400
@@ -15,10 +15,12 @@ root.resizable(False, False)
 root.geometry(f'{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{WINDOW_X}+{WINDOW_Y}')
 
 # Main Parts
-header = Frame(root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH//2)
-header.grid(row=0, column=0, columnspan=2)
-body = Frame(root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH//2)
-body.grid(row=0, column=2, columnspan=2)
+header = Frame(root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH//3)
+header.pack(side=LEFT)
+header.pack_propagate(0)
+body = Frame(root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH*2//3)
+body.pack(side=RIGHT)
+body.pack_propagate(0)
 
 # Header
 app_label = Label(header, text='TodoList', font=(APP_FONT, '10'), width=10)
@@ -30,7 +32,12 @@ date_label = Label(header, textvariable=date_text,
 date_text.set(get_current_date())
 date_label.pack()
 
-add_navbtn = Button(header, text="Add", width=13)
+home_navbtn = Button(header, text="Home", width=13,
+                     command=lambda: set_body(body, 'home'))
+home_navbtn.pack()
+
+add_navbtn = Button(header, text="Add", width=13,
+                    command=lambda: set_body(body, 'add'))
 add_navbtn.pack()
 
 cal_navbtn = Button(header, text="Calendar", width=13)
@@ -45,18 +52,6 @@ cal_navbtn.pack()
 # del_navbtn.pack()
 
 # Body
-tasks_frame = Frame(body)
-tasks_frame.pack()
-
-tasks_listbox = Listbox(tasks_frame, height=23, width=29)
-tasks_listbox.pack(side=LEFT)
-
-tasks_scrollbar = Scrollbar(tasks_frame)
-tasks_scrollbar.pack(side=RIGHT, fill=Y)
-tasks_listbox.config(yscrollcommand=tasks_scrollbar.set)
-tasks_scrollbar.config(command=tasks_listbox.yview)
-
-comp_navbtn = Button(body, text="Complete", width=26)
-comp_navbtn.pack(side=BOTTOM)
+set_body(body, 'home')
 
 root.mainloop()
