@@ -1,5 +1,5 @@
 from tkinter import *
-from commands import get_current_date, set_body
+from commands import load_todo_tasks, save_todo_tasks, get_current_date, set_body
 
 # Constants
 WINDOW_HEIGHT = 400
@@ -13,6 +13,8 @@ root = Tk()
 root.title('TodoList')
 root.resizable(False, False)
 root.geometry(f'{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{WINDOW_X}+{WINDOW_Y}')
+root.protocol('WM_DELETE_WINDOW', lambda: save_todo_tasks(root))
+load_todo_tasks()
 
 # Main Parts
 header = Frame(root, height=WINDOW_HEIGHT, width=WINDOW_WIDTH//3)

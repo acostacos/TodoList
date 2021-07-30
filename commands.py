@@ -1,8 +1,22 @@
 from tkinter import *
 from datetime import date
+from os.path import exists
+import pickle
 
 # Global Varibales
 TODO_ITEMS = []
+
+
+def load_todo_tasks():
+    if exists('todoitems.dat'):
+        loaded_tasks = pickle.load(open('todoitems.dat', 'rb'))
+        for task in loaded_tasks:
+            TODO_ITEMS.append(task)
+
+
+def save_todo_tasks(root):
+    pickle.dump(TODO_ITEMS, open('todoitems.dat', 'wb'))
+    root.destroy()
 
 
 def get_current_date():
